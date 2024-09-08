@@ -1,0 +1,98 @@
+<!--
+Programa: Circulos com o canvas
+Nome: ISABELLA OLIVEIRA - Nº: 14 2ºL
+Nome: MATHEUS SOLES BINA - Nº: 18
+Nome: RENNAN PROENCA JUNG DIAS DE OLIVEIRA - Nº: 24
+Nome: THAINA OLIVEIRA SILVA - Nº: 26.
+Nome: VICTOR REGO MUNIZ - Nº: 27.
+DESCRIÇÃO: Neste código, desenhamos um círculo amarelo no lado superior esquerdo do canvas e um círculo azul no lado inferior direito do canvas de uma forma que eles se movam um em direção ao outro e terminem na borda oposta de onde eles começaram. 
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circulos com o Canvas</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+
+        const yellowCircle = {
+            x: 50,
+            y: 50,
+            radius: 30,
+            color: 'yellow',
+            startX: 50,
+            startY: 50,
+            endX: canvasWidth - 50,
+            endY: canvasHeight - 50,
+            dx: 2,
+            dy: 2
+        };
+
+        const blueCircle = {
+            x: canvasWidth - 50,
+            y: canvasHeight - 50,
+            radius: 30,
+            color: 'blue',
+            startX: canvasWidth - 50,
+            startY: canvasHeight - 50,
+            endX: 50,
+            endY: 50,
+            dx: -2,
+            dy: -2
+        };
+
+        function drawCircle(circle) {
+            ctx.beginPath();
+            ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+            ctx.fillStyle = circle.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function updatePosition(circle) {
+            circle.x += circle.dx;
+            circle.y += circle.dy;
+
+            if (
+                (circle.dx > 0 && circle.x >= circle.endX) ||
+                (circle.dx < 0 && circle.x <= circle.endX) ||
+                (circle.dy > 0 && circle.y >= circle.endY) ||
+                (circle.dy < 0 && circle.y <= circle.endY)
+            ) {
+                circle.x = circle.startX;
+                circle.y = circle.startY;
+                circle.dx = -circle.dx;
+                circle.dy = -circle.dy;
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+            drawCircle(yellowCircle);
+            drawCircle(blueCircle);
+
+            updatePosition(yellowCircle);
+            updatePosition(blueCircle);
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
